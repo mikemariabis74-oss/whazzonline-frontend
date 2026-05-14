@@ -5,6 +5,12 @@
 @layer base {
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  body {
+    @apply bg-stone-50 text-stone-900;
+  }
+  .dark body {
+    @apply bg-stone-950 text-stone-100;
+  }
   :focus-visible { outline: 2px solid #16a34a; outline-offset: 2px; border-radius: 4px; }
 }
 
@@ -17,13 +23,22 @@
     @apply bg-white hover:bg-stone-50 text-stone-900 font-medium px-5 py-2.5 rounded-xl
            border border-stone-200 transition-all duration-150;
   }
+  .dark .btn-secondary {
+    @apply bg-stone-800 hover:bg-stone-700 text-stone-100 border-stone-700;
+  }
   .input-field {
     @apply w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-white text-stone-900
            placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-brand-500
            focus:border-transparent transition-all duration-150 text-sm;
   }
+  .dark .input-field {
+    @apply bg-stone-950 border-stone-800 text-stone-100 placeholder:text-stone-500;
+  }
   .card {
-    @apply bg-white rounded-2xl border border-stone-100 overflow-hidden
+    @apply bg-white text-stone-900 rounded-2xl border border-stone-100 overflow-hidden
            hover:border-stone-200 hover:shadow-md transition-all duration-200;
+  }
+  .dark .card {
+    @apply bg-stone-900 text-stone-100 border-stone-800 hover:border-stone-700;
   }
 }

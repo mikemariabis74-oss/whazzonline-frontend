@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { ShoppingBag, Menu, X } from 'lucide-react'
+import { ShoppingBag, Menu, X, Moon, Sun, Heart } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cart'
+import { useWishlistStore } from '@/lib/store/wishlist'
+import { useThemeStore } from '@/lib/store/theme'
 import { useAuthStore } from '@/lib/store/auth'
 import { authApi } from '@/lib/api'
 import { useState } from 'react'
@@ -10,11 +12,14 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
 export default function Navbar() {
-  const { getCount, openCart } = useCartStore()
+  const { openCart } = useCartStore()
   const { user, access_token, clearAuth } = useAuthStore()
   const [menuOpen, setMenuOpen] = useState(false)
   const router = useRouter()
-  const count = getCount()
+  const count = useCartStore((state) => state.items.length)
+  const wishlistCount = useWishlistStore((state) => state.items.length)
+  const theme = useThemeStore((state) => state.theme)
+  const toggleTheme = useThemeStore((state) => state.toggleTheme)
 
   const handleSignOut = async () => {
     try {
@@ -29,7 +34,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-100">
+    <header className="sticky top-0 z-50 bg-white/90 dark:bg-stone-950/90 backdrop-blur-md border-b border-stone-100 dark:border-stone-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
@@ -65,6 +70,30 @@ export default function Navbar() {
                   {count > 9 ? '9+' : count}
                 </span>
               )}
+            </button>
+
+            <button
+              onClick={() => toast(`${wishlistCount} item${wishlistCount !== 1 ? 's' : ''} saved to wishlist`, { icon: '💜' })}
+              className="relative p-2 rounded-xl hover:bg-stone-100 transition-colors"
+              aria-label="Wishlist"
+            >
+              <Heart className="w-5 h-5 text-stone-700" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-600 rounded-full text-[10px] text-white flex items-center justify-center">
+                  {wishlistCount > 9 ? '9+' : wishlistCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => {
+                toggleTheme()
+                toast.success(`Switched to ${theme === 'dark' ? 'light' : 'dark'} mode`)
+              }}
+              className="p-2 rounded-xl hover:bg-stone-100 transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5 text-stone-700" /> : <Moon className="w-5 h-5 text-stone-700" />}
             </button>
 
             {user ? (

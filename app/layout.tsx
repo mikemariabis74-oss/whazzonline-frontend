@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${jakarta.variable} ${syne.variable}`}>
-      <body className="font-sans bg-stone-50 text-stone-900 antialiased">
+      <body className="font-sans bg-stone-50 text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100 transition-colors duration-300">
         <Navbar />
         <Providers>
           <main className="min-h-screen">{children}</main>
